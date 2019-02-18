@@ -1,7 +1,6 @@
 
 package com.smsRetriever.reactnative;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,11 +13,10 @@ import com.facebook.react.bridge.JavaScriptModule;
 public class RNSmsRetrieverPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNSmsRetrieverModule(reactContext));
-        modules.add(new HintPicker(reactContext));
-
-        return modules;
+      return Arrays.<NativeModule>asList(
+              new RNSmsRetrieverModule(reactContext),
+              new HintPicker(reactContext)
+      );
     }
 
     // Deprecated from RN 0.47
