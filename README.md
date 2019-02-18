@@ -1,6 +1,6 @@
 
 # react-native-sms-retriever
-
+A library used by Housing Apps to read SMS on Android Platform
 ## Getting started
 
 `$ npm install react-native-sms-retriever --save`
