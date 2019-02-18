@@ -16,7 +16,6 @@ public class RNSmsRetrieverPackage implements ReactPackage {
       return Arrays.<NativeModule>asList(
               new RNSmsRetrieverModule(reactContext),
               new HintPicker(reactContext)
-
       );
     }
 
