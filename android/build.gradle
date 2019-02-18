@@ -21,7 +21,6 @@ def DEFAULT_GOOGLE_PLAY_SERVICES_VERSION = "+"
 
 android {
     compileSdkVersion project.hasProperty('compileSdkVersion') ? project.compileSdkVersion : DEFAULT_COMPILE_SDK_VERSION
-    buildToolsVersion project.hasProperty('buildToolsVersion') ? project.buildToolsVersion : DEFAULT_BUILD_TOOLS_VERSION
 
     defaultConfig {
         minSdkVersion 16
@@ -52,10 +51,10 @@ dependencies {
     def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion') ? project.googlePlayServicesVersion
             : project.hasProperty('playServiceVersion') ? project.playServiceVersion : DEFAULT_GOOGLE_PLAY_SERVICES_VERSION
     implementation 'com.facebook.react:react-native:0.57.8'
-    implementation "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
-    implementation 'com.google.android.gms:play-services:+'
-    implementation 'com.google.android.gms:play-services-base:+'
-    implementation 'com.google.android.gms:play-services-auth-api-phone:+'
+    implementation "com.google.android.gms:play-services-auth:11.6.0"
+    implementation 'com.google.android.gms:play-services:11.6.0'
+    implementation 'com.google.android.gms:play-services-base:11.6.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:11.6.0'
     implementation 'com.android.support:appcompat-v7:27.1.1'
 }
 
