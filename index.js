@@ -3,6 +3,6 @@ Object.defineProperty(exports, "__esModule", {
 })
 
 import { NativeModules } from 'react-native';
-export default {SMSRetrieverModule, HintPickerModule} = NativeModules
+export const {SMSRetrieverModule, HintPickerModule} = NativeModules
 
 
