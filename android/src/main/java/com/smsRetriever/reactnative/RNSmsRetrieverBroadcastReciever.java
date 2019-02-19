@@ -21,9 +21,6 @@ public class RNSmsRetrieverBroadcastReciever extends BroadcastReceiver {
     private ReactApplicationContext mContext;
     private static final String EVENT = "com.RNSmsRetriever:otpReceived";
 
-    public RNSmsRetrieverBroadcastReciever() {
-        super();
-    }
 
     public RNSmsRetrieverBroadcastReciever(ReactApplicationContext context) {
         mContext = context;
@@ -35,23 +32,20 @@ public class RNSmsRetrieverBroadcastReciever extends BroadcastReceiver {
             return;
         }
 
+
         if (!mContext.hasActiveCatalystInstance()) {
             return;
         }
 
-
         WritableNativeMap receivedMessage = new WritableNativeMap();
-
         receivedMessage.putString("message", message);
-
         mContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(EVENT, receivedMessage);
     }
+
     @Override
     public void onReceive(Context context, Intent intent) {
-
-
         if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
 
@@ -61,7 +55,6 @@ public class RNSmsRetrieverBroadcastReciever extends BroadcastReceiver {
                 case CommonStatusCodes.SUCCESS:
                     String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
                     this.sendMessage(message);
-
                     break;
                 case CommonStatusCodes.TIMEOUT:
                     Log.e("TIMEOUT","TIMEOUT");
