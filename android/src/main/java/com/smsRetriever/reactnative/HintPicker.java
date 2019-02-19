@@ -41,7 +41,6 @@ class HintPicker extends ReactContextBaseJavaModule implements GoogleApiClient.C
 
     public HintPicker(ReactApplicationContext reactContext) {
         super(reactContext);
-
         apiClient = new GoogleApiClient.Builder(getReactApplicationContext())
                 .addApi(Auth.CREDENTIALS_API)
                 .addConnectionCallbacks(this)

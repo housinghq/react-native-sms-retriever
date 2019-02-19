@@ -25,14 +25,11 @@ import java.util.*;
 public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
 
   private Promise verifyDeviceCallback;
-  private static final String TAG = "SmsRetriever";
   private BroadcastReceiver mReceiver;
-  private ReactApplicationContext context;
   private boolean isReceiverRegistered = false;
 
   public RNSmsRetrieverModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    context=reactContext;
     mReceiver=new RNSmsRetrieverBroadcastReciever(reactContext);
     getReactApplicationContext().addLifecycleEventListener(this);
     registerReceiverIfNecessary(mReceiver);
@@ -43,15 +40,12 @@ public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements 
     return "SMSRetrieverModule";
   }
 
-
   @ReactMethod
   public void startSMSListener(Promise verifyDeviceSuccess){
     verifyDeviceCallback=verifyDeviceSuccess;
-    SmsRetrieverClient client = SmsRetriever.getClient(context);
+    SmsRetrieverClient client = SmsRetriever.getClient(getReactApplicationContext());
     Task<Void> task = client.startSmsRetriever();
-
     task.addOnSuccessListener(new OnSuccessListener<Void>() {
-
       @Override
       public void onSuccess(Void aVoid) {
         verifyDeviceCallback.resolve(true);
@@ -63,7 +57,6 @@ public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements 
       public void onFailure(@NonNull Exception e) {
         verifyDeviceCallback.reject(e);
       }
-
     });
 
 
@@ -72,7 +65,7 @@ public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements 
   @ReactMethod
   public void getHash(Promise promise) {
     try {
-      SignatureHelperClass helper = new SignatureHelperClass(context);
+      SignatureHelperClass helper = new SignatureHelperClass(getReactApplicationContext());
       ArrayList<String> signatures = helper.getAppSignatures();
       WritableArray arr = Arguments.createArray();
       for (String s : signatures) {
@@ -96,11 +89,11 @@ public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements 
       e.printStackTrace();
     }
   }
+
   private void unregisterReceiver(BroadcastReceiver receiver) {
     if (isReceiverRegistered && getCurrentActivity() != null && receiver != null) {
       try {
         getCurrentActivity().unregisterReceiver(receiver);
-        Log.d(TAG, "Receiver UnRegistered");
         isReceiverRegistered = false;
       } catch (Exception e) {
         e.printStackTrace();

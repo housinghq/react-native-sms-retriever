@@ -21,36 +21,28 @@ public class RNSmsRetrieverBroadcastReciever extends BroadcastReceiver {
     private ReactApplicationContext mContext;
     private static final String EVENT = "com.RNSmsRetriever:otpReceived";
 
-
     public RNSmsRetrieverBroadcastReciever(ReactApplicationContext context) {
         mContext = context;
     }
-
     private void sendMessage(String message) {
 
         if (mContext == null) {
             return;
         }
-
-
         if (!mContext.hasActiveCatalystInstance()) {
             return;
         }
-
         WritableNativeMap receivedMessage = new WritableNativeMap();
         receivedMessage.putString("message", message);
         mContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(EVENT, receivedMessage);
     }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
-
             Status status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
-            System.out.println(status.getStatusCode());
             switch(status.getStatusCode()) {
                 case CommonStatusCodes.SUCCESS:
                     String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
