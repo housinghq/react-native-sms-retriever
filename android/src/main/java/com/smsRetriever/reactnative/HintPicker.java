@@ -25,16 +25,15 @@ class HintPicker extends ReactContextBaseJavaModule implements GoogleApiClient.C
     private Promise requestHintCallback;
     private static final int RESOLVE_HINT = 1001;
     private GoogleApiClient apiClient;
-    private ReactApplicationContext context;
 
     private final ActivityEventListener mActivityEventListener= new BaseActivityEventListener() {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
             if (requestCode == RESOLVE_HINT) {
                 if (resultCode == Activity.RESULT_OK) {
+                    getReactApplicationContext().removeActivityEventListener(mActivityEventListener);
                     Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                     requestHintCallback.resolve(credential.getId());
-
                 }
             }
         }
@@ -42,32 +41,24 @@ class HintPicker extends ReactContextBaseJavaModule implements GoogleApiClient.C
 
     public HintPicker(ReactApplicationContext reactContext) {
         super(reactContext);
-        reactContext.addActivityEventListener(mActivityEventListener);
-        context=reactContext;
         apiClient = new GoogleApiClient.Builder(getReactApplicationContext())
                 .addApi(Auth.CREDENTIALS_API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
     }
-
-
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
+    public void onConnected(@Nullable Bundle bundle) {}
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        this.apiClient=null;
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        this.apiClient=null;
     }
-
-
 
     @Override
     public String getName() {
@@ -77,17 +68,19 @@ class HintPicker extends ReactContextBaseJavaModule implements GoogleApiClient.C
     @ReactMethod
     public void requestHint(Promise RequestHintSuccess){
         Activity currentActivity = getCurrentActivity();
-        requestHintCallback = RequestHintSuccess;
-
+        this.requestHintCallback = RequestHintSuccess;
+        getReactApplicationContext().addActivityEventListener(mActivityEventListener);
         if (currentActivity==null){
             requestHintCallback.reject("No Activity Found");
             return;
         }
         try{
-            HintRequest hintRequest = new HintRequest.Builder()
-                    .setPhoneNumberIdentifierSupported(true).build();
-            PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(apiClient, hintRequest);
-            currentActivity.startIntentSenderForResult(intent.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
+            if (this.apiClient!=null){
+                HintRequest hintRequest = new HintRequest.Builder()
+                        .setPhoneNumberIdentifierSupported(true).build();
+                PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(apiClient, hintRequest);
+                currentActivity.startIntentSenderForResult(intent.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
+            }
 
         }
         catch(Exception e){
