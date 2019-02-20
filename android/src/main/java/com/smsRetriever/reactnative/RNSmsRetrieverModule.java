@@ -41,13 +41,13 @@ public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements 
 
   @ReactMethod
   public void startSMSListener(final Promise verifyDeviceSuccess){
-    verifyDeviceCallback=verifyDeviceSuccess;
+    verifyDeviceCallback = verifyDeviceSuccess;
     SmsRetrieverClient client = SmsRetriever.getClient(getReactApplicationContext());
     Task<Void> task = client.startSmsRetriever();
     task.addOnSuccessListener(new OnSuccessListener<Void>() {
       @Override
       public void onSuccess(Void aVoid) {
-          if (verifyDeviceSuccess != null) {
+          if (verifyDeviceCallback != null) {
               verifyDeviceCallback.resolve(true);
           }
       }
@@ -55,7 +55,7 @@ public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements 
     task.addOnFailureListener(new OnFailureListener() {
       @Override
       public void onFailure(@NonNull Exception e) {
-          if (verifyDeviceSuccess != null) {
+          if (verifyDeviceCallback != null) {
               verifyDeviceCallback.reject(e);
           }
       }
