@@ -3,11 +3,11 @@
 A library used by Housing Apps to read SMS on Android Platform
 ## Getting started
 
-`$ npm install react-native-sms-retriever --save`
+`$ npm install @housing/react-native-sms-retriever --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-sms-retriever`
+`$ react-native link @housing/react-native-sms-retriever`
 
 ### Manual installation
 
@@ -19,20 +19,44 @@ A library used by Housing Apps to read SMS on Android Platform
   - Add `new RNSmsRetrieverPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
   	```
-  	include ':react-native-sms-retriever'
-  	project(':react-native-sms-retriever').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-sms-retriever/android')
+  	include ':@housing/react-native-sms-retriever'
+  	project(':@housing/react-native-sms-retriever').projectDir = new File(rootProject.projectDir, 	'../node_modules/@housing/react-native-sms-retriever/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
-      compile project(':react-native-sms-retriever')
+      implementation project(':@housing/react-native-sms-retriever')
   	```
 
 
 ## Usage
 ```javascript
-import RNSmsRetriever from 'react-native-sms-retriever';
+import { HintPicker } from '@housing/react-native-sms-retriever';
+import { SmsRetirever } from '@housing/react-native-sms-retriever';
 
-// TODO: What to do with the module?
-RNSmsRetriever;
+//Usage for hint Picker
+
+async requestHint() {
+    try {
+      let phoneNumber = await HintPickerModule.requestHint()
+      //phoneNumber is the number User selected
+      
+    } catch (exception) {
+      Sentry.captureException(exception)
+    }
+  }
+  
+ //Usage for SmsRetriever 
+ 
+ startSMSListener() {
+    try {
+      SMSRetrieverModule.startSMSListener()
+      const messageEventEmitter = new NativeEventEmitter(SMSRetrieverModule)
+      messageEventEmitter.addListener(Constants.MESSAGE_EVENT_TAG, (Give callback))
+    }
+    catch (exception) {
+      Sentry.captureException(exception)
+    }
+  }
+  
 ```
   
