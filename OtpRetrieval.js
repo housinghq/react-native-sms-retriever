@@ -2,6 +2,7 @@ import { NativeEventEmitter, NativeModules } from 'react-native'
 import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 import R from 'ramda'
+import { Sentry } from 'react-native-sentry'
 
 const isEmpty = R.anyPass([R.isNil, R.isEmpty])
 
@@ -54,7 +55,7 @@ const { SMSRetrieverModule } = NativeModules
           const messageEventEmitter = new NativeEventEmitter(SMSRetrieverModule)
           messageEventEmitter.addListener('com.RNSmsRetriever:otpReceived', this.onOtpRecieved)
         } catch (exception) {
-          //Sentry.captureException(exception)
+          Sentry.captureException(exception)
         }
       }
 
