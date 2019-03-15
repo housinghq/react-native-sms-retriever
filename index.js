@@ -6,8 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 // export const {SMSRetrieverModule, HintPickerModule} = NativeModules
 
 import OtpRetrieval from './OtpRetrieval'
-
-module.exports = {
+export default {
     OtpRetrieval: OtpRetrieval,
     SMSRetrieverModule: NativeModules.SMSRetrieverModule
-  }
+}
+// module.exports = {
+//     OtpRetrieval: OtpRetrieval,
+//     SMSRetrieverModule: NativeModules.SMSRetrieverModule
+//   }
