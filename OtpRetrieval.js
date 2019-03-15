@@ -2,7 +2,7 @@ import { NativeEventEmitter, NativeModules } from 'react-native'
 import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 import R from 'ramda'
-import SMSRetrieverModule  from './index'
+import { SMSRetrieverModule }  from './index'
 
 const isEmpty = R.anyPass([R.isNil, R.isEmpty])
 
