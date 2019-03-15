@@ -2,44 +2,43 @@ import { NativeEventEmitter, NativeModules } from 'react-native'
 import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 import R from 'ramda'
-import { SMSRetrieverModule }  from './index'
 
 const isEmpty = R.anyPass([R.isNil, R.isEmpty])
 
-//const { SMSRetrieverModule } = NativeModules
+const { SMSRetrieverModule } = NativeModules
  export default class OtpRetrieval extends Component{
-    otpRetrievalComplete = false
+      otpRetrievalComplete= false
+
     componentDidMount(){
-        console.log(SMSRetrieverModule)
         this.startSMSListener()
     }
 
     extractOTPFromMessage = (message) => {
-        const { position } = this.props
-        let array = []
-        if (!isEmpty(message)) {
-          array = message.split(' ')
-        }
-      
-        if (!isEmpty(array) && array.length >= 3) {
-          return array[position]
-        }
-        return null
+      const { position } = this.props
+      let array = []
+      if (!isEmpty(message)) {
+        array = message.split(' ')
       }
+    
+      if (!isEmpty(array) && array.length >= 3) {
+        return array[position]
+      }
+      return null
+    }
 
     onOtpRecieved = (event) => {
         if (!isEmpty(event)) {
           const otp = this.extractOTPFromMessage(event.message)
           this.otpRef.onChangeText(otp)
-          this.otpRetrievalComplete = true
+          this.otpRetrievalComplete= true
         }
       }
 
       onChangeOtpText = (otp) => {
           if(this.otpRetrievalComplete) {
              this.props.onAutoReadComplete(otp)   
-          }  
-        this.props.onChangeText()
+          }
+        //this.props.onChangeText(otp)
       }
 
       setOTPRef = (ref) => {
@@ -49,13 +48,13 @@ const isEmpty = R.anyPass([R.isNil, R.isEmpty])
         }
       }
     
-      async startSMSListener() {
+      startSMSListener() {
         try {
           SMSRetrieverModule.startSMSListener()
           const messageEventEmitter = new NativeEventEmitter(SMSRetrieverModule)
           messageEventEmitter.addListener('com.RNSmsRetriever:otpReceived', this.onOtpRecieved)
         } catch (exception) {
-          Sentry.captureException(exception)
+          //Sentry.captureException(exception)
         }
       }
 
