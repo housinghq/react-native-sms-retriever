@@ -1,10 +1,10 @@
-import { SMSRetrieverModule } from './index'
-import { Component, NativeEventEmitter } from 'react-native'
+import { NativeEventEmitter, NativeModules } from 'react-native'
+import { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 
-let otpRetrievalComplete = false
+const { SMSRetrieverModule } = NativeModules
  export default class OtpRetrieval extends Component{
-    
+    otpRetrievalComplete = false
     componentDidMount(){
         this.startSMSListener()
     }
