@@ -14,7 +14,8 @@ import {
 import R from 'ramda'
 import colors from './colors'
 import If from './If'
-import { isEmpty } from './Helpers'
+
+const isEmpty = R.anyPass([R.isNil, R.isEmpty])
 
 const styles = StyleSheet.create({
   box: {
