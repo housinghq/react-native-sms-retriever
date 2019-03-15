@@ -1,14 +1,16 @@
 import { NativeEventEmitter, NativeModules } from 'react-native'
-import { Component } from 'react'
+import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 import R from 'ramda'
+import { SMSRetrieverModule } from './index'
 
 const isEmpty = R.anyPass([R.isNil, R.isEmpty])
 
-const { SMSRetrieverModule } = NativeModules
+//const { SMSRetrieverModule } = NativeModules
  export default class OtpRetrieval extends Component{
     otpRetrievalComplete = false
     componentDidMount(){
+        console.log(SMSRetrieverModule)
         this.startSMSListener()
     }
 
@@ -58,7 +60,7 @@ const { SMSRetrieverModule } = NativeModules
       }
 
     render() {
-        const { position, onChangeOtpText, onChangeText , ...others} = props
+        const { position, onChangeOtpText, onChangeText , ...others} = this.props
         return(
             <GenericTextInput 
                 {...others}
