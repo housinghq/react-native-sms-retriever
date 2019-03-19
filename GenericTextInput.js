@@ -232,7 +232,8 @@ export default class GenericTextInput extends PureComponent {
         value,
         // eslint-disable-next-line
         valid: this.state.focused ? true : validationMap(props.type)(value)
-      }), this.props.onChangeText(value))
+      }))
+      this.props.onChangeText(value)
     }
   }
 
