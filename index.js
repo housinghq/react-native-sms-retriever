@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 import { NativeModules } from 'react-native';
 import OtpRetrieval from './OtpRetrieval'
 
-export const {SMSRetrieverModule, HintPickerModule} = NativeModules
 module.exports = {
-    OtpRetrieval: OtpRetrieval
+    OtpRetrieval: OtpRetrieval,
+    HintPickerModule: NativeModules.HintPickerModule
   }
