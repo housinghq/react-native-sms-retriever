@@ -2,7 +2,6 @@ import { NativeEventEmitter, NativeModules } from 'react-native'
 import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 import R from 'ramda'
-import { Sentry } from 'react-native-sentry'
 import PropTypes from 'prop-types'
 
 const isEmpty = R.anyPass([R.isNil, R.isEmpty])
