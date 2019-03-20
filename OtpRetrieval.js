@@ -26,11 +26,15 @@ const { SMSRetrieverModule } = NativeModules
   }
 
     componentDidMount(){
-        this.startSMSListener()
+      this.startSMSListener()
     }
 
     isNumeric = (value) => {
       return !isNaN(value)
+    }
+
+    startSmsListenerOnResend(){
+      this.startSMSListener()
     }
 
     extractOTPFromMessage = (message) => {
@@ -40,18 +44,19 @@ const { SMSRetrieverModule } = NativeModules
         array = message.split(' ')
       }
     
-      if (!isEmpty(array) && array.length >= 3 && isNumeric(array[position])) {
+      if (!isEmpty(array) && array.length >= 3 && this.isNumeric(array[position])) {
         return array[position]
       }
       return null
     }
 
-    onOtpRecieved = (event) => {
+      onOtpRecieved = (event) => {
         if (!isEmpty(event)) {
           const otp = this.extractOTPFromMessage(event.message)
-          if (!isEmpty(this.otpRef) && !isEmpty(otp))
-          this.otpRetrievalComplete= true
-          this.otpRef.onChangeText(otp)
+          if (!isEmpty(this.otpRef) && !isEmpty(otp)){
+            this.otpRetrievalComplete= true
+            this.otpRef.onChangeText(otp)
+          } 
         }
       }
 
