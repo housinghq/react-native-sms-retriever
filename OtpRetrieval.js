@@ -13,17 +13,25 @@ const { SMSRetrieverModule } = NativeModules
   static propTypes = {
     refCallback:PropTypes.func,
     onAutoReadComplete:PropTypes.func,
-    position:PropTypes.number
+    position:PropTypes.number,
+    onChangeText: PropTypes.func,
+    onErrorOccured: PropTypes.func
   }
 
   static defaultProps = {
     refCallback: () => {},
     onAutoReadComplete: () => {},
-    position: 2
+    position: 2,
+    onChangeText: () => {},
+    onErrorOccured: () => {}
   }
 
     componentDidMount(){
         this.startSMSListener()
+    }
+
+    isNumeric = (value) => {
+      return !isNaN(value)
     }
 
     extractOTPFromMessage = (message) => {
@@ -33,7 +41,7 @@ const { SMSRetrieverModule } = NativeModules
         array = message.split(' ')
       }
     
-      if (!isEmpty(array) && array.length >= 3) {
+      if (!isEmpty(array) && array.length >= 3 && isNumeric(array[position])) {
         return array[position]
       }
       return null
@@ -42,13 +50,19 @@ const { SMSRetrieverModule } = NativeModules
     onOtpRecieved = (event) => {
         if (!isEmpty(event)) {
           const otp = this.extractOTPFromMessage(event.message)
-          this.otpRef.onChangeText(otp)
           this.otpRetrievalComplete= true
+          if (!isEmpty(otpRef) && !isEmpty(otp))
+          this.otpRef.onChangeText(otp)
         }
       }
 
-      onChangeOtpText = (otp) => {
-        this.props.onAutoReadComplete(otp)   
+      onChangeText = (text) => {
+        if (this.otpRetrievalComplete){
+          this.props.onAutoReadComplete(otp)
+          this.otpRetrievalComplete=false
+        }
+        const { onChangeText } = this.props
+        onChangeText(text)
       }
 
       setOTPRef = (ref) => {
@@ -62,16 +76,16 @@ const { SMSRetrieverModule } = NativeModules
           const messageEventEmitter = new NativeEventEmitter(SMSRetrieverModule)
           messageEventEmitter.addListener('com.RNSmsRetriever:otpReceived', this.onOtpRecieved)
         } catch (exception) {
-          Sentry.captureException(exception)
+          this.props.onErrorOccured(exception)
         }
       }
 
     render() {
-        const { position, onChangeOtpText, onChangeText , ...others} = this.props
+        const { refCallback, onAutoReadComplete, onErrorOccured, position, onChangeText , ...others} = this.props
         return(
             <GenericTextInput 
                 {...others}
-                onChangeText={this.onChangeOtpText}
+                onChangeText={this.onChangeText}
                 ref={this.setOTPRef}
             />
         )
