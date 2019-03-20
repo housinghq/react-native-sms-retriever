@@ -49,8 +49,8 @@ const { SMSRetrieverModule } = NativeModules
     onOtpRecieved = (event) => {
         if (!isEmpty(event)) {
           const otp = this.extractOTPFromMessage(event.message)
+          if (!isEmpty(this.otpRef) && !isEmpty(otp))
           this.otpRetrievalComplete= true
-          if (!isEmpty(otpRef) && !isEmpty(otp))
           this.otpRef.onChangeText(otp)
         }
       }
