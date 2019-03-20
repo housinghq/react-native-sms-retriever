@@ -3,11 +3,24 @@ import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 import R from 'ramda'
 import { Sentry } from 'react-native-sentry'
+import PropTypes from 'prop-types'
 
 const isEmpty = R.anyPass([R.isNil, R.isEmpty])
 
 const { SMSRetrieverModule } = NativeModules
  export default class OtpRetrieval extends Component{
+
+  static propTypes = {
+    refCallback:PropTypes.func,
+    onAutoReadComplete:PropTypes.func,
+    position:PropTypes.number
+  }
+
+  static defaultProps = {
+    refCallback: () => {},
+    onAutoReadComplete: () => {},
+    position: 2
+  }
 
     componentDidMount(){
         this.startSMSListener()
