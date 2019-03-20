@@ -8,7 +8,6 @@ const isEmpty = R.anyPass([R.isNil, R.isEmpty])
 
 const { SMSRetrieverModule } = NativeModules
  export default class OtpRetrieval extends Component{
-      otpRetrievalComplete= false
 
     componentDidMount(){
         this.startSMSListener()
@@ -36,17 +35,12 @@ const { SMSRetrieverModule } = NativeModules
       }
 
       onChangeOtpText = (otp) => {
-          if(this.otpRetrievalComplete) {
-             this.props.onAutoReadComplete(otp)   
-          }
-        //this.props.onChangeText(otp)
+        this.props.onAutoReadComplete(otp)   
       }
 
       setOTPRef = (ref) => {
+        this.props.refCallback(ref)
         this.otpRef = ref
-        if (!isEmpty(ref)) {
-          ref.clear() // to clear the field when login with otp pressed
-        }
       }
     
       startSMSListener() {
