@@ -15,7 +15,6 @@ const { SMSRetrieverModule } = NativeModules
     position:PropTypes.number,
     onChangeText: PropTypes.func,
     onErrorOccured: PropTypes.func,
-    resendClicked: PropTypes.func
   }
 
   static defaultProps = {
@@ -23,8 +22,7 @@ const { SMSRetrieverModule } = NativeModules
     onAutoReadComplete: () => {},
     position: 2,
     onChangeText: () => {},
-    onErrorOccured: () => {},
-    resendClicked: () => {}
+    onErrorOccured: () => {}
   }
 
     componentDidMount(){
