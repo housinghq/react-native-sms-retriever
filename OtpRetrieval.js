@@ -60,7 +60,7 @@ const { SMSRetrieverModule } = NativeModules
 
       onChangeText = (text) => {
         if (this.otpRetrievalComplete){
-          this.props.onAutoReadComplete(otp)
+          this.props.onAutoReadComplete(text)
           this.otpRetrievalComplete=false
         }
         const { onChangeText } = this.props
