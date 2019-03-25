@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules } from 'react-native'
+import { NativeEventEmitter, NativeModules, Platform, } from 'react-native'
 import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
 import R from 'ramda'
@@ -26,15 +26,13 @@ const { SMSRetrieverModule } = NativeModules
   }
 
     componentDidMount(){
-      this.startSMSListener()
+      if (Platform.OS==='android') {
+        this.startSMSListener()
+      }
     }
 
     isNumeric = (value) => {
       return !isNaN(value)
-    }
-
-    startSmsListenerOnResend(){
-      this.startSMSListener()
     }
 
     extractOTPFromMessage = (message) => {
@@ -62,7 +60,7 @@ const { SMSRetrieverModule } = NativeModules
 
       onChangeText = (text) => {
         if (this.otpRetrievalComplete){
-          this.props.onAutoReadComplete(otp)
+          this.props.onAutoReadComplete(text)
           this.otpRetrievalComplete=false
         }
         const { onChangeText } = this.props
@@ -84,6 +82,10 @@ const { SMSRetrieverModule } = NativeModules
         }
       }
 
+    resendClicked = () => {
+      this.startSMSListener()
+    }
+
     render() {
         const { refCallback, onAutoReadComplete, onErrorOccured, position, onChangeText , ...others} = this.props
         return(
@@ -91,6 +93,7 @@ const { SMSRetrieverModule } = NativeModules
                 {...others}
                 onChangeText={this.onChangeText}
                 ref={this.setOTPRef}
+                resendClicked={this.resendClicked}
             />
         )
     }

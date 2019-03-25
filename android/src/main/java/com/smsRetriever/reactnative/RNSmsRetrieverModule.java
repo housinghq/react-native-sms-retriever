@@ -23,7 +23,6 @@ import java.util.*;
 
 public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
 
-  private Promise verifyDeviceCallback;
   private BroadcastReceiver mReceiver;
   private boolean isReceiverRegistered = false;
   private SmsRetrieverClient smsRetrieverClient;
@@ -41,28 +40,11 @@ public class RNSmsRetrieverModule extends ReactContextBaseJavaModule implements 
   }
 
   @ReactMethod
-  public void startSMSListener(final Promise verifyDeviceSuccess){
-    verifyDeviceCallback = verifyDeviceSuccess;
+  public void startSMSListener(){
     if(null == smsRetrieverClient) {
       smsRetrieverClient = SmsRetriever.getClient(getReactApplicationContext());
     }
-    Task<Void> task = smsRetrieverClient.startSmsRetriever();
-    task.addOnSuccessListener(new OnSuccessListener<Void>() {
-      @Override
-      public void onSuccess(Void aVoid) {
-          if (verifyDeviceCallback != null) {
-              verifyDeviceCallback.resolve(true);
-          }
-      }
-    });
-    task.addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-          if (verifyDeviceCallback != null) {
-              verifyDeviceCallback.reject(e);
-          }
-      }
-    });
+    smsRetrieverClient.startSmsRetriever();
   }
 
   @ReactMethod

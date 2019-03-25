@@ -155,7 +155,8 @@ export default class GenericTextInput extends PureComponent {
     onChangeText: PropTypes.func,
     onSubmitEditing: PropTypes.func,
     secureTextEntry: PropTypes.bool,
-    value: PropTypes.string
+    value: PropTypes.string,
+    resendClicked: PropTypes.func
   }
 
   static defaultProps = {
@@ -164,6 +165,7 @@ export default class GenericTextInput extends PureComponent {
     onChangeText: () => {},
     onSubmitEditing: () => {},
     onDidUpdate: () => {},
+    resendClicked: () => {},
     type: 'generic',
     accentColor: colors.purple,
     underlineColor: colors.black,
@@ -201,6 +203,10 @@ export default class GenericTextInput extends PureComponent {
     if (this.props.autoFocus) {
       this.focus()
     }
+  }
+
+  resendClicked(){
+    this.props.resendClicked()
   }
 
   componentDidUpdate(prevProps, prevState) {
