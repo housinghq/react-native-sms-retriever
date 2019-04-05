@@ -31,7 +31,7 @@ A library used by Housing Apps to read SMS on Android Platform
 ## Usage
 ```javascript
 import { HintPicker } from '@housing/react-native-sms-retriever';
-import { SmsRetirever } from '@housing/react-native-sms-retriever';
+import { OtpRetrieval } from '@housing/react-native-sms-retriever';
 
 //Usage for hint Picker
 
@@ -46,17 +46,22 @@ async requestHint() {
   }
   
  //Usage for SmsRetriever 
+ // The library is wrapped inside a component which is a generic text input.It retrieves and populates the OTP in the text input.
  
- startSMSListener() {
-    try {
-      SMSRetrieverModule.startSMSListener()
-      const messageEventEmitter = new NativeEventEmitter(SMSRetrieverModule)
-      messageEventEmitter.addListener(Constants.MESSAGE_EVENT_TAG, (Give callback))
-    }
-    catch (exception) {
-      Sentry.captureException(exception)
-    }
-  }
+ <OtpRetrieval
+    onAutoReadComplete={this.onAutoReadComplete}  // callback which returns the retrieved otp back to the app in argument
+    refCallback={this.setOTPRef}  // callback which gives the ref of the Generic TextInput in the library.We set the ref to access functions of Generic TextInput
+    type="otp"
+    autoCorrect={false}
+    autoCapitalize="none"
+    placeholder={Constants.OTP_PLACEHOLDER}
+    errorText={Constants.OTP_ERROR_TEXT}
+    position={otpPosition}  // specifies the position of OTP in the text message that user gets while OTP Verification
+    onErrorOccured={this.onErrorOccured}  // A callback that gives any error occured during OTP Retrieval.
+  />
+
+  // To handle reset, the ref that is set in refCallback must call onResendClicked.
+  // Pass onChangeText as props to the library to handle the case when the user enters OTP manually.
   
 ```
   
