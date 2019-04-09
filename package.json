@@ -1,6 +1,6 @@
 {
   "name": "@housing/react-native-sms-retriever",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "## Getting started",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,9 @@
   ],
   "author": "Onkar Pandit",
   "license": "ISC",
-  "peerDependencies": {
-    "react-native": "^0.57.8",
-    "react": "^16.6.3"
+  "dependencies": {
+    "react-native": ">= 0.57.8",
+    "react": "*"
   },
   "devDependencies": {},
   "repository": {
