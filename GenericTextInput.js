@@ -11,11 +11,21 @@ import {
   InteractionManager,
   Platform
 } from 'react-native'
-import R from 'ramda'
 import colors from './colors'
 import If from './If'
+import anyPass from 'ramda/src/anyPass'
+import isEmpty from 'ramda/src/isEmpty'
+import compose from 'ramda/src/compose'
+import not from 'ramda/src/not'
+import isNil from 'ramda/src/isNil'
+import curry from 'ramda/src/curry'
+import cond from 'ramda/src/cond'
+import equals from 'ramda/src/equals'
+import T from 'ramda/src/T'
+import always from 'ramda/src/always'
+import is from 'ramda/src/is'
 
-const isEmpty = R.anyPass([R.isNil, R.isEmpty])
+const isEmpty = anyPass([isNil, isEmpty])
 
 const styles = StyleSheet.create({
   box: {
@@ -83,15 +93,15 @@ const styles = StyleSheet.create({
   }
 })
 
-const interpolate = R.curry((animatedValue,
+const interpolate = curry((animatedValue,
   inputRange = [0, 1], outputRange = [0, 1]) => animatedValue.interpolate({
   inputRange,
   outputRange
 }))
 
-const isNotNil = R.compose(
-  R.not,
-  R.isNil
+const isNotNil = compose(
+  not,
+  isNil
 )
 
 const animationConfig = {
@@ -99,7 +109,7 @@ const animationConfig = {
   easing: Easing.inOut(Easing.ease)
 }
 
-const createAnimation = R.curry((animatedValue,
+const createAnimation = curry((animatedValue,
   config = {}) => Animated.timing(animatedValue, Object.assign({}, animationConfig, config)))
 
 const { test } = RegExp.prototype
@@ -118,15 +128,15 @@ const validationMap = type => ({
     return test.bind(RegExp('^[0-9]{3,}$'))(val)
   },
   date: test.bind(RegExp('^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$')),
-  generic: R.T
+  generic: T
 }[type])
 
-const keyboardType = R.cond([
-  [R.equals('numeric'), R.always('numeric')],
-  [R.equals('otp'), R.always('numeric')],
-  [R.equals('mail'), R.always('email-address')],
-  [R.equals('tel'), R.always('phone-pad')],
-  [R.T, R.always('default')]
+const keyboardType = cond([
+  [equals('numeric'), always('numeric')],
+  [equals('otp'), always('numeric')],
+  [equals('mail'), always('email-address')],
+  [equals('tel'), always('phone-pad')],
+  [T, always('default')]
 ])
 
 export default class GenericTextInput extends PureComponent {
@@ -394,7 +404,7 @@ export default class GenericTextInput extends PureComponent {
                 && showWithoutFocus
                 && showExtraView
                 && extraView
-                && R.is(Function)(viewOnPress)
+                && is(Function)(viewOnPress)
               }
             >
               <View style={{ position: 'absolute', right: 0, bottom: 11 }}>
@@ -465,14 +475,14 @@ export default class GenericTextInput extends PureComponent {
                     </View>
                   </TouchableWithoutFeedback>
                 </If>
-                <If predicate={showResendOtp && R.is(Function)(resendOtp)}>
+                <If predicate={showResendOtp && is(Function)(resendOtp)}>
                   <TouchableWithoutFeedback onPress={resendOtp}>
                     <View>
                       <Text style={styles.resendButton}>Resend</Text>
                     </View>
                   </TouchableWithoutFeedback>
                 </If>
-                <If predicate={showExtraView && extraView && R.is(Function)(viewOnPress)}>
+                <If predicate={showExtraView && extraView && is(Function)(viewOnPress)}>
                   <TouchableWithoutFeedback onPress={viewOnPress}>
                     {extraView}
                   </TouchableWithoutFeedback>

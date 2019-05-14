@@ -1,10 +1,12 @@
 import { NativeEventEmitter, NativeModules, Platform, } from 'react-native'
 import React, { Component } from 'react'
 import GenericTextInput from './GenericTextInput';
-import R from 'ramda'
+import anyPass from 'ramda/src/anyPass'
+import isNil from 'ramda/src/isNil'
+import _isEmpty from 'ramda/src/isEmpty'
 import PropTypes from 'prop-types'
 
-const isEmpty = R.anyPass([R.isNil, R.isEmpty])
+const isEmpty = anyPass([isNil, _isEmpty])
 
 const { SMSRetrieverModule } = NativeModules
  export default class OtpRetrieval extends Component{

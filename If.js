@@ -1,33 +1,43 @@
 import React, { Children } from 'react'
 import PropTypes from 'prop-types'
-import R from 'ramda'
+import bind from 'ramda/src/bind'
+import ifElse from 'ramda/src/ifElse'
+import propSatisfies from 'ramda/src/propSatisfies'
+import converge from 'ramda/src/converge'
+import prop from 'ramda/src/prop'
+import pipe from 'ramda/src/pipe'
+import is from 'ramda/src/is'
+import equals from 'ramda/src/equals'
+import always from 'ramda/src/always'
+import call from 'ramda/src/call'
 import { View } from 'react-native'
 
-const count = R.bind(Children.count, Children)
 
-const If = R.ifElse(
+const count = bind(Children.count, Children)
+
+const If = ifElse(
   // TODO: Evaluate predicate function with props
   /*
     If predicate is function, evaluate it, otherwise, return as is (will be either truthy ot falsy).
    */
-  R.ifElse(
-    R.propSatisfies(R.is(Function), 'predicate'),
-    R.converge(R.call, [R.prop('predicate')]),
-    R.prop('predicate')
+  ifElse(
+    propSatisfies(is(Function), 'predicate'),
+    converge(call, [prop('predicate')]),
+    prop('predicate')
   ),
   /*
     If predicate is truthy, evaulate this block with props.
     If single child, return as is, otherwise wrap in a view.
    */
-  R.ifElse(
-    R.propSatisfies(R.pipe(count, R.equals(1)), 'children'),
-    R.prop('children'),
-    R.pipe(R.prop('children'), children => <View>{children}</View>)
+  ifElse(
+    propSatisfies(pipe(count, equals(1)), 'children'),
+    prop('children'),
+    pipe(prop('children'), children => <View>{children}</View>)
   ),
   /*
     If predicate is falsy, always return null
    */
-  R.always(null)
+  always(null)
 )
 
 If.propTypes = {
