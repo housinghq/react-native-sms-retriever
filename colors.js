@@ -1,8 +1,8 @@
-import R from 'ramda'
+import clamp from 'ramda/src/clamp'
 
 export function setAlpha(color, alpha) {
   const alphaValue = (() => {
-    const hex = Math.floor(R.clamp(0, 100, alpha) * (255 / 100)).toString(16)
+    const hex = Math.floor(clamp(0, 100, alpha) * (255 / 100)).toString(16)
     if (hex.length === 1) {
       return `0${hex}`
     }
