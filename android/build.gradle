@@ -42,7 +42,6 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'
     implementation "com.google.android.gms:play-services-auth:11.6.0"
-    implementation 'com.google.android.gms:play-services:11.6.0'
     implementation 'com.google.android.gms:play-services-base:11.6.0'
     implementation 'com.google.android.gms:play-services-auth-api-phone:11.6.0'
     implementation 'com.android.support:appcompat-v7:27.1.1'
