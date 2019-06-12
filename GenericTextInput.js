@@ -14,7 +14,7 @@ import {
 import colors from './colors'
 import If from './If'
 import anyPass from 'ramda/src/anyPass'
-import isEmpty from 'ramda/src/isEmpty'
+import is_Empty from 'ramda/src/isEmpty'
 import compose from 'ramda/src/compose'
 import not from 'ramda/src/not'
 import isNil from 'ramda/src/isNil'
@@ -25,7 +25,7 @@ import T from 'ramda/src/T'
 import always from 'ramda/src/always'
 import is from 'ramda/src/is'
 
-const isEmpty = anyPass([isNil, isEmpty])
+const isEmpty = anyPass([isNil, is_Empty])
 
 const styles = StyleSheet.create({
   box: {
