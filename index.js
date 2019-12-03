@@ -7,5 +7,6 @@ import OtpRetrieval from './OtpRetrieval'
 
 module.exports = {
     OtpRetrieval: OtpRetrieval,
-    HintPickerModule: NativeModules.HintPickerModule
+    HintPickerModule: NativeModules.HintPickerModule,
+    OtpRetrieverModule: NativeModules.SMSRetrieverModule
   }
